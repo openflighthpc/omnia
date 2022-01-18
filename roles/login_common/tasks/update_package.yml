@@ -21,3 +21,4 @@
   when:
     - ( ansible_distribution | lower == os_centos )
     - ( ansible_distribution_version < os_version )
+  tags: ipa

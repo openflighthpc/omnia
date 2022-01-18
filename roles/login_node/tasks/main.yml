@@ -24,3 +24,4 @@
   when:
     - hostvars['127.0.0.1']['login_node_required']
     - hostvars[groups['manager'][0]] != hostvars[groups['login_node'][0]]
+  tags: ipa

@@ -15,17 +15,21 @@
 
 - name: Include ipa server variables
   include_vars: ../../login_common/vars/main.yml
+  tags: ipa
 
 - name: Fetch hostname
   command: hostname
   register: loginnode_hostname
   changed_when: false
+  tags: ipa
 
 - name: Install freeipa client package
   package:
     name: "{{ ipa_client_package }}"
     state: present
-  tags: install
+  tags:
+    - install
+    - ipa
 
 - name: Set hostname of ipa server when MS has ipa server installed
   set_fact:
@@ -33,6 +37,7 @@
     required_server_hostname: "{{ hostvars[groups['manager'][0]]['server_hostname'] }}"
     required_domain_name: "{{ hostvars['127.0.0.1']['domain_name'] }}"
   when: not hostvars['127.0.0.1']['ipa_server_ms']
+  tags: ipa
 
 - name: Set hostname of ipa server when manager node has ipa server installed
   set_fact:
@@ -40,11 +45,13 @@
     required_server_hostname: "{{ hostvars['127.0.0.1']['server_hostname'] }}"
     required_domain_name: "{{ hostvars['127.0.0.1']['server_domain'] }}"
   when: hostvars['127.0.0.1']['ipa_server_ms']
+  tags: ipa
 
 - name: Uninstall client if already installed
   command: ipa-client-install --uninstall -U
   changed_when: false
   failed_when: false
+  tags: ipa
 
 - name: Install ipa client in CentOS 7.9
   command: >-
@@ -55,6 +62,7 @@
   when:
     - ( ansible_distribution | lower == os_centos )
     - ( ansible_distribution_version < os_version )
+  tags: ipa
 
 - name: Install ipa client in Rocky 8.4
   command: >-
@@ -66,3 +74,4 @@
     - ( ansible_distribution | lower == os_centos ) or
       ( ansible_distribution | lower == os_rocky )
     - ( ansible_distribution_version >= os_version )
+  tags: ipa

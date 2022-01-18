@@ -15,20 +15,24 @@
 
 - name: Include common vars
   include_vars: ../../login_common/vars/main.yml
+  tags: ipa
 
 - name: Fetch hostname
   command: hostname
   register: new_serv_hostname
   changed_when: false
+  tags: ipa
 
 - name: Set fact for server hostname
   set_fact:
     server_hostname: "{{ new_serv_hostname.stdout }}"
+  tags: ipa
 
 - name: Uninstall server if it is already installed
   command: ipa-server-install --uninstall -U
   changed_when: false
   failed_when: false
+  tags: ipa
 
 - name: Install ipa server in CentOS 7.9
   command: >-
@@ -39,6 +43,7 @@
   when:
     - ( ansible_distribution | lower == os_centos )
     - ( ansible_distribution_version < os_version )
+  tags: ipa
 
 - name: Install ipa server in CentOS > 8 or Rocky 8.4
   command: >-
@@ -50,11 +55,13 @@
     - ( ansible_distribution | lower == os_centos ) or
       ( ansible_distribution | lower == os_rocky )
     - ( ansible_distribution_version >= os_version )
+  tags: ipa
 
 - name: Authenticate as admin
   shell: set -o pipefail && echo $'{{ hostvars['127.0.0.1']['ipa_admin_password'] }}' | kinit admin
   no_log: true
   changed_when: false
+  tags: ipa
 
 - name: Replace the /etc/resolv.conf file
   copy:
@@ -62,3 +69,4 @@
     dest: "{{ resolv_conf_path }}"
     mode: "{{ file_mode }}"
     remote_src: yes
+  tags: ipa
