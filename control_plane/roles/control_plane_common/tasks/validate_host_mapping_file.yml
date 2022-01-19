@@ -167,7 +167,7 @@
   - name: Validation to check number of nfs nodes defined
     fail:
       msg: "{{ fail_mapping_file_nfs_role }}"
-    when: (not (count_of_nfs_node|int == 1) and powervault_support) or ((count_of_nfs_node|int == 1) and not powervault_support)
+    when: (not (count_of_nfs_node|int == 0) and powervault_support) or ((count_of_nfs_node|int == 0) and not powervault_support)
   tags: install
 
   rescue:
