@@ -30,3 +30,4 @@
   when:
     - hostvars['127.0.0.1']['login_node_required']
     - not hostvars['127.0.0.1']['ipa_server_ms']
+  tags: ipa

@@ -59,7 +59,6 @@
     - name: Initialize ipa server variables
       include_tasks: fetch_ipa_password.yml
       when: login_node_required
-      tags: ipa 
 
 - name: omnia.yml runing on host
   block:
