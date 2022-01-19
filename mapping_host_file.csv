@@ -1,0 +1,5 @@
+MAC,Hostname,IP,Component_role
+B4:96:91:D3:DB:84,head1,10.10.1.1,manager
+B0:7B:25:DE:0C:A2,compute1,10.11.2.1,compute
+B4:96:91:D3:D9:5C,storage1,10.11.3.1,nfs_node
+B0:7B:25:DE:0E:C2,login1,10.11.4.1,login_node
