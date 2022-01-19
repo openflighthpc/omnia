@@ -24,3 +24,4 @@
 - name: Install free-ipa server
   include_tasks: install_ipa_server.yml
   when: hostvars['127.0.0.1']['login_node_required']
+  tags: ipa
