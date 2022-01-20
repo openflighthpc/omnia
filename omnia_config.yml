@@ -13,10 +13,18 @@
 #  limitations under the License.
 ---
 
+# Internal Network IP Range & Netmask
+# The IP range and netmask for the compute nodes on the internal network
+compute_ip_range: 10.110.0.0/255.255.0.0'
+
 # Password used for Slurm database.
 # The Length of the password should be atleast 8.
 # The password must not contain -,\, ',"
 mariadb_password: "password"
+
+# Kubernetes Host IP
+# The internal network IP of the kubernetes server
+k8s_server_ip: 10.110.1.200
 
 # Kubernetes version.
 # Supported Versions: "1.16.7" or "1.19.3".
