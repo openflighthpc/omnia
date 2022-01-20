@@ -136,6 +136,7 @@
     state: present
     create: yes
     mode: "{{ hosts_file_mode }}"
+  tags: hostsfile
 
 - name: Add compute hosts info in manager node hosts file
   lineinfile:
@@ -147,6 +148,7 @@
   with_items:
     - "{{ groups['compute'] }}"
   when: "'manager' in group_names"
+  tags: hostsfile
 
 - name: Add manager hosts info in compute node hosts file
   lineinfile:
@@ -158,6 +160,7 @@
   with_items:
     - "{{ groups['manager'] }}"
   when: "'compute' in group_names"
+  tags: hostsfile
 
 - name: Add login node info in /etc/hosts of manager node
   lineinfile:
@@ -171,6 +174,7 @@
   when:
     - '"manager" in group_names'
     - hostvars["127.0.0.1"]["login_node_required"]
+  tags: hostsfile
 
 - name: Add manager info in /etc/hosts of login node
   lineinfile:
@@ -184,6 +188,7 @@
   when:
     - '"login_node" in group_names'
     - hostvars["127.0.0.1"]["login_node_required"]
+  tags: hostsfile
 
 - name: Add compute info in /etc/hosts of login node
   lineinfile:
@@ -197,3 +202,4 @@
   when:
     - hostvars["127.0.0.1"]["login_node_required"]
     - '"login_node" in group_names'
+  tags: hostsfile
