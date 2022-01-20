@@ -16,7 +16,9 @@
 - name: Disable swap (if not already disabled)
   command: /usr/sbin/swapoff -a
   changed_when: true
-  tags: init
+  tags: 
+    - init
+    - swap
 
 - name: Get hostname
   command: hostname

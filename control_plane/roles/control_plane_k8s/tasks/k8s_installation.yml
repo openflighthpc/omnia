@@ -18,6 +18,7 @@
     name: "swap"
     fstype: swap
     state: absent
+  tags: swap
 
 - name: Disable selinux
   selinux:

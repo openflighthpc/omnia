@@ -16,13 +16,16 @@
 - name: Disable SWAP (1/2)
   command: /usr/sbin/swapoff -a
   changed_when: true
-  tags: init
+  tags:
+    - init
+    - swap
 
 - name: Disable SWAP in fstab (2/2)
   replace:
     path: /etc/fstab
     regexp: '^([^#].*?\sswap\s+.*)$'
     replace: '# \1'
+  tags: swap
 
 - name: Get K8s nodes status
   command: kubectl get nodes
