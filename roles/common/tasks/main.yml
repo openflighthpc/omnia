@@ -100,7 +100,9 @@
 
 - name: Deploy time ntp/chrony
   include_tasks: ntp.yml
-  tags: install
+  tags:
+    - install
+    - ntp
 
 - name: Install Nvidia drivers and software components
   include_tasks: nvidia.yml
