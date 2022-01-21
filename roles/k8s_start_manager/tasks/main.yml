@@ -17,12 +17,14 @@
   command: /usr/sbin/swapoff -a
   changed_when: true
   tags: init
+  when: not openflight_stack
 
 - name: Disable SWAP in fstab (2/2)
   replace:
     path: /etc/fstab
     regexp: '^([^#].*?\sswap\s+.*)$'
     replace: '# \1'
+  when: not openflight_stack
 
 - name: Get netaddr
   setup:

@@ -24,6 +24,7 @@
     name: firewalld
     state: present
   tags: firewalld
+  when: not openflight_stack
 
 - name: Start and enable firewalld
   service:
@@ -31,6 +32,7 @@
     state: started
     enabled: yes
   tags: firewalld
+  when: not openflight_stack
 
 - name: Start and enable rpcbind and nfs-server service
   service:
@@ -82,3 +84,4 @@
     state: stopped
     enabled: no
   tags: firewalld
+  when: not openflight_stack

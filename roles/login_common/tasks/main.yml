@@ -15,7 +15,9 @@
 
 - name: Add ports of manager and login node to firewall
   include_tasks: firewall_settings.yml
-  when: hostvars['127.0.0.1']['login_node_required']
+  when:
+    - hostvars['127.0.0.1']['login_node_required']
+    - not openflight_stack
 
 - name: Enable module idm in Rocky or Centos >= 8.0
   include_tasks: enable_dnf_module.yml

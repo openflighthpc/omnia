@@ -18,6 +18,7 @@
     name: firewalld
     state: present
   tags: firewalld
+  when: not openflight_stack
 
 - name: Start and enable firewalld
   service:
@@ -25,6 +26,7 @@
     state: started
     enabled: yes
   tags: firewalld
+  when: not openflight_stack
 
 - name: Firewall port addition for slurm exporter
   firewalld:
@@ -36,11 +38,13 @@
     - "{{ slurm_exporter_port }}/tcp"
     - "{{ slurm_exporter_port }}/udp"
   tags: firewalld
+  when: not openflight_stack
 
 - name: Reload firewalld
   command: firewall-cmd --reload
   changed_when: true
   tags: firewalld
+  when: not openflight_stack
 
 - name: Stop and disable firewalld
   service:
@@ -48,6 +52,7 @@
     state: stopped
     enabled: no
   tags: firewalld
+  when: not openflight_stack
 
 - name: Create systemd unit file
   copy:

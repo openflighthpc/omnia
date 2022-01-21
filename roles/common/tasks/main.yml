@@ -13,6 +13,17 @@
 #  limitations under the License.
 ---
 
+- name: SF Debug
+  debug:
+    msg: 
+      - "k8s: {{ k8s_server_ip }}"
+      - "nfs server: {{ nfs_server_manager_node }}"
+      - "ip range: {{ compute_ip_range }}"
+      - "domain: {{ domain_name }}"
+      - "realm: {{ realm_name }}"
+      - "dir pass: {{ directory_manager_password }}"
+      - "ipa pass: {{ ipa_admin_password }}"
+
 - name: Create a custom fact directory on each host
   file:
     path: "{{ custom_fact_dir }}"
@@ -69,6 +80,7 @@
     fstype: swap
     state: absent
   tags: swap
+  when: not openflight_stack
 
 - name: Disable selinux
   selinux:
@@ -104,6 +116,7 @@
   tags:
     - install
     - ntp
+  when: not openflight_stack
 
 - name: Install Nvidia drivers and software components
   include_tasks: nvidia.yml
@@ -138,6 +151,7 @@
     create: yes
     mode: "{{ hosts_file_mode }}"
   tags: hostsfile
+  when: not openflight_stack
 
 - name: Add compute hosts info in manager node hosts file
   lineinfile:
@@ -148,7 +162,9 @@
     mode: "{{ hosts_file_mode }}"
   with_items:
     - "{{ groups['compute'] }}"
-  when: "'manager' in group_names"
+  when:
+    - "'manager' in group_names"
+    - not openflight_stack
   tags: hostsfile
 
 - name: Add manager hosts info in compute node hosts file
@@ -160,7 +176,9 @@
     mode: "{{ hosts_file_mode }}"
   with_items:
     - "{{ groups['manager'] }}"
-  when: "'compute' in group_names"
+  when:
+    - "'compute' in group_names"
+    - not openflight_stack
   tags: hostsfile
 
 - name: Add login node info in /etc/hosts of manager node
@@ -175,6 +193,7 @@
   when:
     - '"manager" in group_names'
     - hostvars["127.0.0.1"]["login_node_required"]
+    - not openflight_stack
   tags: hostsfile
 
 - name: Add manager info in /etc/hosts of login node
@@ -189,6 +208,7 @@
   when:
     - '"login_node" in group_names'
     - hostvars["127.0.0.1"]["login_node_required"]
+    - not openflight_stack
   tags: hostsfile
 
 - name: Add compute info in /etc/hosts of login node
@@ -203,4 +223,5 @@
   when:
     - hostvars["127.0.0.1"]["login_node_required"]
     - '"login_node" in group_names'
+    - not openflight_stack
   tags: hostsfile

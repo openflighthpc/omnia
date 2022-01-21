@@ -81,6 +81,7 @@
     name: firewalld
     state: present
   tags: firewalld
+  when: not openflight_stack
 
 - name: Start and enable firewalld
   service:
@@ -88,6 +89,7 @@
     state: started
     enabled: yes
   tags: firewalld
+  when: not openflight_stack
 
 - name: Firewall rule for slurm - tcp/udp ports
   firewalld:
@@ -103,7 +105,9 @@
     - "{{ udp_port3 }}"
     - "{{ udp_port1 }}"
     - "{{ udp_port2 }}"
-  when: "'manager' in group_names"
+  when:
+    - "'manager' in group_names"
+    - not openflight_stack
   tags: firewalld
 
 - name: Get network address/subnet mask
@@ -117,11 +121,13 @@
     permanent: true
     state: enabled
   tags: firewalld
+  when: not openflight_stack
 
 - name: Reload firewalld
   command: firewall-cmd --reload
   changed_when: true
   tags: firewalld
+  when: not openflight_stack
 
 - name: Start mariadb
   systemd:

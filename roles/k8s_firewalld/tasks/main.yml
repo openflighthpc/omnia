@@ -18,6 +18,7 @@
     name: firewalld
     state: present
   tags: firewalld
+  when: not openflight_stack
 
 - name: Start and enable firewalld
   service:
@@ -25,6 +26,7 @@
     state: started
     enabled: yes
   tags: firewalld
+  when: not openflight_stack
 
 - name: Configure firewalld on master nodes
   firewalld:
@@ -32,7 +34,9 @@
     permanent: yes
     state: enabled
   with_items: '{{ k8s_master_ports }}'
-  when: "'manager' in group_names"
+  when: 
+    - "'manager' in group_names"
+    - not openflight_stack
   tags: firewalld
 
 - name: Configure firewalld on compute nodes
@@ -41,7 +45,9 @@
     permanent: yes
     state: enabled
   with_items: '{{ k8s_compute_ports }}'
-  when: "'compute' in group_names and groups['manager'][0] != groups['compute'][0] and groups['compute']|length >= 1"
+  when:
+    - "'compute' in group_names and groups['manager'][0] != groups['compute'][0] and groups['compute']|length >= 1"
+    - not openflight_stack
   tags: firewalld
 
 - name: Open flannel ports on the firewall
@@ -50,7 +56,9 @@
     permanent: yes
     state: enabled
   with_items: "{{ flannel_udp_ports }}"
-  when: hostvars['127.0.0.1']['k8s_cni'] == "flannel"
+  when:
+    - hostvars['127.0.0.1']['k8s_cni'] == "flannel"
+    - not openflight_stack
   tags: firewalld
 
 - name: Open calico UDP ports on the firewall
@@ -59,7 +67,9 @@
     permanent: yes
     state: enabled
   with_items: "{{ calico_udp_ports }}"
-  when: hostvars['127.0.0.1']['k8s_cni'] == "calico"
+  when:
+    - hostvars['127.0.0.1']['k8s_cni'] == "calico"
+    - not openflight_stack
   tags: firewalld
 
 - name: Open calico TCP ports on the firewall
@@ -68,18 +78,22 @@
     permanent: yes
     state: enabled
   with_items: "{{ calico_tcp_ports }}"
-  when: hostvars['127.0.0.1']['k8s_cni'] == "calico"
+  when:
+    - hostvars['127.0.0.1']['k8s_cni'] == "calico"
+    - not openflight_stack
   tags: firewalld
 
 - name: Masquerade the firewall
   command: firewall-cmd --add-masquerade --permanent
   changed_when: true
   tags: firewalld
+  when: not openflight_stack
 
 - name: Reload firewalld
   command: firewall-cmd --reload
   changed_when: true
   tags: firewalld
+  when: not openflight_stack
 
 - name: Stop and disable firewalld
   service:
@@ -87,3 +101,4 @@
     state: stopped
     enabled: no
   tags: firewalld
+  when: not openflight_stack

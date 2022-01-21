@@ -39,6 +39,7 @@
     name: firewalld
     state: present
   tags: firewalld
+  when: not openflight_stack
 
 - name: Start and enable firewalld
   service:
@@ -46,6 +47,7 @@
     state: started
     enabled: yes
   tags: firewalld
+  when: not openflight_stack
 
 - name: Firewall rule for slurm - tcp/udp ports
   firewalld:
@@ -57,11 +59,13 @@
     - "{{ tcp_port2 }}"
     - "{{ udp_port2 }}"
   tags: firewalld
+  when: not openflight_stack
 
 - name: Reload firewalld
   command: firewall-cmd --reload
   changed_when: true
   tags: firewalld
+  when: not openflight_stack
 
 - name: Stop and disable firewalld
   service:
@@ -69,6 +73,7 @@
     state: stopped
     enabled: no
   tags: firewalld
+  when: not openflight_stack
 
 - name: Copy slurm conf from buffer
   copy:

@@ -19,6 +19,7 @@
   tags: 
     - init
     - swap
+  when: not openflight_stack
 
 - name: Get hostname
   command: hostname

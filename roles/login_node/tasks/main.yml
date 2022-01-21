@@ -18,10 +18,12 @@
   when:
     - hostvars['127.0.0.1']['login_node_required']
     - hostvars[groups['manager'][0]] != hostvars[groups['login_node'][0]]
+    - not openflight_stack
 
 - name: Install ipa client
   include_tasks: install_ipa_client.yml
   when:
     - hostvars['127.0.0.1']['login_node_required']
     - hostvars[groups['manager'][0]] != hostvars[groups['login_node'][0]]
+    - not openflight_stack
   tags: ipa
