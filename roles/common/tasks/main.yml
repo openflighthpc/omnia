@@ -13,17 +13,6 @@
 #  limitations under the License.
 ---
 
-- name: SF Debug
-  debug:
-    msg: 
-      - "k8s: {{ k8s_server_ip }}"
-      - "nfs server: {{ nfs_server_manager_node }}"
-      - "ip range: {{ compute_ip_range }}"
-      - "domain: {{ domain_name }}"
-      - "realm: {{ realm_name }}"
-      - "dir pass: {{ directory_manager_password }}"
-      - "ipa pass: {{ ipa_admin_password }}"
-
 - name: Create a custom fact directory on each host
   file:
     path: "{{ custom_fact_dir }}"
