@@ -18,7 +18,7 @@
   changed_when: false
   register: awx_content
   run_once: true
-  no_log: true
+  no_log: false
 
 - name: Decrpyt tower_cli.cfg
   command: ansible-vault decrypt "{{ tower_config_path }}" --vault-password-file "{{ tower_vault_path }}"
@@ -37,21 +37,21 @@
   register: fetch_awx_username
   changed_when: false
   run_once: true
-  no_log: true
+  no_log: false
 
 - name: Fetch awx password
   command: grep "password:" "{{ tower_config_path }}"
   register: fetch_awx_password
   changed_when: false
   run_once: true
-  no_log: true
+  no_log: false
 
 - name: Set awx variables
   set_fact:
     awx_host: "{{ fetch_awx_host.stdout | regex_replace('host: ','') }}"
     awx_username: "{{ fetch_awx_username.stdout | regex_replace('username: ','') }}"
     awx_password: "{{ fetch_awx_password.stdout | regex_replace('password: ','') }}"
-  no_log: true
+  no_log: false
 
 - name: Encrypt tower_cli.cfg
   command: ansible-vault encrypt "{{ tower_config_path }}" --vault-password-file "{{ tower_vault_path }}"
@@ -66,9 +66,22 @@
   register: inventory_list
   run_once: true
   changed_when: false
-  no_log: true
+  no_log: false
+
+- name: Debug inventory list
+  ansible.builtin.debug:
+    msg: "{{ inventory_list }}"
+
+- name: Set powervault_status
+  set_fact:
+    powervault_status: true
+  when: inventory_list.stdout_lines[2:] is search(powervault_inventory_name)
 
 - block:
+    - name: Reset powervault_status
+      set_fact:
+        powervault_status: false
+
     - name: Fetch powervault_me4_inventory
       command: >-
         awx --conf.host {{ awx_host }} --conf.username {{ awx_username }} --conf.password {{ awx_password }}
@@ -76,9 +89,9 @@
       register: fetch_inventory
       run_once: true
       changed_when: false
-      no_log: true
+      no_log: false
 
-    - name: Set powervault_status
+    - name: Set powervault_status based on powervault_me4_inventory
       set_fact:
         powervault_status: true
       when: fetch_inventory.stdout_lines[2:] | length > 0
@@ -89,3 +102,4 @@
         groups: "{{ powervault_group }}"
       when: powervault_status
       with_items: "{{ fetch_inventory.stdout_lines[2:] }}"
+  when: powervault_status
