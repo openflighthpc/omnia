@@ -47,7 +47,7 @@
       command: "cat {{ omnia_config_file }}"
       changed_when: false
       register: config_content
-      #no_log: True
+      #no_log: false
 
     - name: Decrpyt omnia_config.yml
       command: >-
@@ -157,7 +157,7 @@
     - name: Check if tower_config_file file is encrypted
       command: cat "{{ playbook_dir }}/../../webui_awx/files/.tower_cli.cfg"
       changed_when: false
-      no_log: true
+      no_log: false
       register: tower_config_content
       run_once: true
 
@@ -185,21 +185,21 @@
       register: fetch_awx_username
       changed_when: false
       run_once: true
-      no_log: true
+      no_log: false
 
     - name: Fetch awx password
       command: grep "password:" "{{ playbook_dir }}/../../webui_awx/files/.tower_cli.cfg"
       register: fetch_awx_password
       changed_when: false
       run_once: true
-      no_log: true
+      no_log: false
 
     - name: Set awx variables
       set_fact:
         awx_host: "{{ fetch_awx_host.stdout | regex_replace('host: ','') }}"
         awx_username: "{{ fetch_awx_username.stdout | regex_replace('username: ','') }}"
         awx_password: "{{ fetch_awx_password.stdout | regex_replace('password: ','') }}"
-      no_log: true
+      no_log: false
 
     - name: Encrypt tower_config_file
       command: >-

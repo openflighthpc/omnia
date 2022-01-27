@@ -40,7 +40,7 @@
     - name: Check if {{ login_vars_file }} file is encrypted
       command: cat {{ login_vars_file }}
       changed_when: false
-      no_log: true
+      no_log: false
       register: config_content
       run_once: true
 
@@ -54,7 +54,7 @@
 
     - name: Include variable file {{ login_vars_file }}
       include_vars: "{{ login_vars_file }}"
-      no_log: true
+      no_log: false
       run_once: true
     
     - name: Save input variables from file
@@ -81,7 +81,7 @@
             ansible-playbook -i {{ provisioned_hosts_file }}
             {{ role_path }}/files/create_inventory.yml
             --extra-vars "host_username={{ host_username }} host_password={{ provision_password }} mapping_file={{ mapping_file | bool }}"
-          no_log: True
+          no_log: false
           register: register_error
       rescue:
         - name: Fail if host addition was not successful

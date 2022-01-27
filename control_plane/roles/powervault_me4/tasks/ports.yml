@@ -22,7 +22,7 @@
 - name: Check if login_vars.yml file is encrypted
   command: cat {{ login_pv_file }}
   changed_when: false
-  no_log: true
+  no_log: false
   register: config_content
   delegate_to: localhost
   run_once: true
@@ -38,7 +38,7 @@
 
 - name: Include variable file login_vars.yml
   include_vars: "{{ login_pv_file }}"
-  no_log: true
+  no_log: false
 
 - name: Get auth string
   shell: echo -n {{ powervault_me4_username }}_{{ powervault_me4_password }}  | sha256sum

@@ -32,7 +32,7 @@
     - name: Check if tower_config_file file is encrypted
       command: cat "{{ playbook_dir }}/../../webui_awx/files/.tower_cli.cfg"
       changed_when: false
-      no_log: true
+      no_log: false
       register: tower_config_content
       run_once: true
 
@@ -61,21 +61,21 @@
       register: fetch_awx_username
       changed_when: false
       run_once: true
-      no_log: true
+      no_log: false
 
     - name: Fetch awx password
       command: grep "password:" "{{ playbook_dir }}/../../webui_awx/files/.tower_cli.cfg"
       register: fetch_awx_password
       changed_when: false
       run_once: true
-      no_log: true
+      no_log: false
 
     - name: Set awx variables
       set_fact:
         awx_host: "{{ fetch_awx_host.stdout | regex_replace('host: ','') }}"
         awx_username: "{{ fetch_awx_username.stdout | regex_replace('username: ','') }}"
         awx_password: "{{ fetch_awx_password.stdout | regex_replace('password: ','') }}"
-      no_log: true
+      no_log: false
 
     - name: Encrypt tower_config_file
       command: >-
@@ -94,7 +94,7 @@
     - name: Check if {{ login_vars_file }} file is encrypted
       command: cat {{ login_vars_file }}
       changed_when: false
-      no_log: true
+      no_log: false
       register: config_content
       run_once: true
 
@@ -108,7 +108,7 @@
 
     - name: Include variable file {{ login_vars_file }}
       include_vars: "{{ login_vars_file }}"
-      no_log: true
+      no_log: false
       run_once: true
 
     - name: Encrypt {{ login_vars_file }}
@@ -139,7 +139,7 @@
             awx --conf.host {{ awx_host }} --conf.username {{ awx_username }} --conf.password {{ awx_password }}
             --conf.insecure hosts list --inventory idrac_inventory -f human --filter "name"
           changed_when: false
-          no_log: true
+          no_log: false
           run_once: true
           register: idrac_hosts
 
@@ -171,7 +171,7 @@
             awx --conf.host {{ awx_host }} --conf.username {{ awx_username }} --conf.password {{ awx_password }}
             --conf.insecure hosts create --name {{ inventory_hostname }} --inventory idrac_inventory
           changed_when: true
-          no_log: true
+          no_log: false
       rescue:
         - name: Failed while adding device to idrac_inventory
           debug:
@@ -185,7 +185,7 @@
             awx --conf.host {{ awx_host }} --conf.username {{ awx_username }} --conf.password {{ awx_password }}
             --conf.insecure hosts list --inventory ethernet_inventory -f human --filter "name"
           changed_when: false
-          no_log: true
+          no_log: false
           register: ethernet_switches
 
         - name: Assert ethernet switch
@@ -197,7 +197,7 @@
             commands: ['show version']
           when: inventory_hostname not in ethernet_switches.stdout
           register: dellswitch_info
-          no_log: true
+          no_log: false
 
         - name: Set ethernet_inventory_status
           set_fact:
@@ -221,7 +221,7 @@
             awx --conf.host {{ awx_host }} --conf.username {{ awx_username }} --conf.password {{ awx_password }}
             --conf.insecure hosts create --name {{ inventory_hostname }} --inventory ethernet_inventory
           changed_when: true
-          no_log: true
+          no_log: false
       rescue:
         - name: Failed while adding device to ethernet_inventory
           debug:
@@ -235,7 +235,7 @@
             awx --conf.host {{ awx_host }} --conf.username {{ awx_username }} --conf.password {{ awx_password }}
             --conf.insecure hosts list --inventory infiniband_inventory -f human --filter "name"
           changed_when: false
-          no_log: true
+          no_log: false
           register: infiniband_switches
 
         - name: Authenticate infiniband Switch
@@ -248,7 +248,7 @@
               f_password: "{{ ib_password }}"
               enter: Sign in
             status_code: "{{ infiniband_status_code }}"
-          no_log: true
+          no_log: false
           register: login
           when: inventory_hostname not in infiniband_switches.stdout
 
@@ -295,7 +295,7 @@
             awx --conf.host {{ awx_host }} --conf.username {{ awx_username }} --conf.password {{ awx_password }}
             --conf.insecure hosts create --name {{ inventory_hostname }} --inventory infiniband_inventory
           changed_when: true
-          no_log: true
+          no_log: false
       rescue:
         - name: Failed while adding device to ib_inventory
           debug:
@@ -309,14 +309,14 @@
             awx --conf.host {{ awx_host }} --conf.username {{ awx_username }} --conf.password {{ awx_password }}
             --conf.insecure hosts list --inventory powervault_me4_inventory -f human --filter "name"
           changed_when: false
-          no_log: true
+          no_log: false
           register: me4_storage
 
         - name: Get auth string for powervault
           shell: echo -n {{ powervault_me4_username }}_{{ powervault_me4_password }} | sha256sum
           changed_when: false
           register: auth_string
-          no_log: true
+          no_log: false
           when: inventory_hostname not in me4_storage.stdout
 
         - name: Get session key for powervault
@@ -365,7 +365,7 @@
             awx --conf.host {{ awx_host }} --conf.username {{ awx_username }} --conf.password {{ awx_password }}
             --conf.insecure hosts create --name {{ inventory_hostname }} --inventory powervault_me4_inventory
           changed_when: true
-          no_log: true
+          no_log: false
       rescue:
         - name: Failed while adding device to powervault_me4_inventory
           debug:

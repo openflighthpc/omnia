@@ -15,7 +15,7 @@
 - name: Check if {{ tower_config_file }} file is encrypted
   command: cat {{ tower_config_file }}
   changed_when: false
-  no_log: true
+  no_log: false
   register: config_content
 
 - name: Decrpyt {{ tower_config_file }}
@@ -38,14 +38,14 @@
 - name: Fetch awx password
   command: grep "password:" "{{ tower_config_file }}"
   changed_when: false
-  no_log: true
+  no_log: false
   register: fetch_awx_password
 
 - name: Set awx variables
   set_fact:
     awx_host: "{{ fetch_awx_host.stdout | regex_replace('host: ','') }}"
     awx_password: "{{ fetch_awx_password.stdout | regex_replace('password: ','') }}"
-  no_log: true
+  no_log: false
 
 - name: Launch dynamic inventory
   block:

@@ -42,21 +42,21 @@
   register: fetch_awx_username
   changed_when: false
   run_once: true
-  no_log: true
+  no_log: false
 
 - name: Fetch awx password
   command: grep "password:" "{{ playbook_dir }}/../roles/webui_awx/files/{{ awx_vars_filename }}"
   register: fetch_awx_password
   changed_when: false
   run_once: true
-  no_log: true
+  no_log: false
 
 - name: Set awx variables
   set_fact:
     awx_host: "{{ fetch_awx_host.stdout | regex_replace('host: ','') }}"
     awx_username: "{{ fetch_awx_username.stdout | regex_replace('username: ','') }}"
     awx_password: "{{ fetch_awx_password.stdout | regex_replace('password: ','') }}"
-  no_log: true
+  no_log: false
 
 - name: Encrypt tower_cli.cfg
   command: >-
@@ -73,7 +73,7 @@
   register: inventory_list
   run_once: true
   changed_when: false
-  no_log: true
+  no_log: false
 
 - block:
     - name: Fetch provisioned_idrac inventory
@@ -83,7 +83,7 @@
       register: fetch_inventory
       run_once: true
       changed_when: false
-      no_log: true
+      no_log: false
     
     - name: Launch ethernet_template
       command: >-
@@ -91,7 +91,7 @@
         job_templates launch {{ ethernet_template_name }} --wait
       run_once: true
       changed_when: true
-      no_log: true
+      no_log: false
 
     - name: Wait for 10 mins for DHCP to assign IP to devices
       wait_for:
@@ -103,6 +103,6 @@
         job_templates launch {{ idrac_template_name }} --wait
       run_once: true
       changed_when: false
-      no_log: true
+      no_log: false
       when: inventory_hostname not in fetch_inventory.stdout
   when: provisioned_idrac_inventory_name in inventory_list.stdout

@@ -83,11 +83,11 @@
   changed_when: false
   register: generate_random_phrase
   tags: install
-  no_log: true
+  no_log: false
 
 - name: Encrypt login password
   command: openssl passwd -1 -salt {{ generate_random_phrase.stdout }} {{ provision_password }}
-  no_log: true
+  no_log: false
   changed_when: false
   register: encrypt_login_pass
   tags: install
@@ -97,7 +97,7 @@
     path: "{{ role_path }}/files/{{ idrac_kickstart_file }}"
     regexp: '^rootpw --iscrypted ks_password'
     replace: 'rootpw --iscrypted {{ encrypt_login_pass.stdout }}'
-  no_log: true
+  no_log: false
   tags: install
 
 - name: Configure kickstart file centos - nic

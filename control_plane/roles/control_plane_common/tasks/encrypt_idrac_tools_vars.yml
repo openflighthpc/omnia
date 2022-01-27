@@ -37,7 +37,7 @@
   command: cat {{ idrac_tools_vars_filename }}
   changed_when: false
   register: idrac_tools_content
-  no_log: True
+  no_log: false
 
 - name: Encrpyt idrac_tools_vars.yml
   command: >-

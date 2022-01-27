@@ -55,7 +55,7 @@
     - name: Include variable file idrac_tools_vars.yml
       include_vars: "{{ playbook_dir }}/../{{ idrac_tools_vars_filename }}"
       run_once: true
-      no_log: true
+      no_log: false
     
     - name: Validate LDAP parameters are not empty
       fail:

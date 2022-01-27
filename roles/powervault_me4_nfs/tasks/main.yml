@@ -15,7 +15,7 @@
 
 - name: Include variable file for powervault
   include_vars: "{{ pv_nfs_file }}"
-  no_log: true
+  no_log: false
 
 - name: Configure the server
   include_tasks: nfs_node_configure.yml

@@ -324,7 +324,7 @@
       command: cat ../{{ config_filename }}
       changed_when: false
       register: config_content
-      no_log: True
+      no_log: false
       tags: TC_002
 
     - name: Decrpyt omnia_config.yml
@@ -416,7 +416,7 @@
       command: cat ../{{ config_filename }}
       changed_when: false
       register: config_content
-      no_log: True
+      no_log: false
       tags: TC_003
 
     - name: Decrpyt omnia_config.yml
@@ -511,7 +511,7 @@
       command: cat ../{{ config_filename }}
       changed_when: false
       register: config_content
-      no_log: True
+      no_log: false
       tags: TC_004
 
     - name: Decrpyt omnia_config.yml
@@ -631,7 +631,7 @@
       command: cat ../{{ config_filename }}
       changed_when: false
       register: config_content
-      no_log: True
+      no_log: false
       tags: TC_010
 
     - name: Decrpyt omnia_config.yml
@@ -730,7 +730,7 @@
       command: cat ../{{ config_filename }}
       changed_when: false
       register: config_content
-      no_log: True
+      no_log: false
       tags: TC_011
 
     - name: Decrpyt omnia_config.yml
@@ -832,7 +832,7 @@
       command: cat ../{{ config_filename }}
       changed_when: false
       register: config_content
-      no_log: True
+      no_log: false
       tags: TC_012
 
     - name: Decrpyt omnia_config.yml

@@ -32,7 +32,7 @@
       command: cat {{ login_vars_path }}
       changed_when: false
       register: config_content
-      no_log: true
+      no_log: false
       tags: always
 
     - name: Decrpyt login_vars.yml
@@ -41,12 +41,12 @@
         --vault-password-file {{ login_vars_vault_path }}
       changed_when: false
       when: "'$ANSIBLE_VAULT;' in config_content.stdout"
-      no_log: true
+      no_log: false
       tags: always
 
     - name: Include variable file login_vars.yml
       include_vars: "{{ login_vars_path }}"
-      no_log: true
+      no_log: false
       tags: always
 
     - name: Get auth string
@@ -54,7 +54,7 @@
       register: auth_string_output
       changed_when: false
       failed_when: false
-      no_log: true
+      no_log: false
       tags: always
 
     - name: Set the powervault username and password
@@ -62,7 +62,7 @@
         powervault_username: "{{ powervault_me4_username }}"
         powervault_password: "{{ powervault_me4_password }}"
         auth_string: "{{ auth_string_output }}"
-      no_log: true
+      no_log: false
       tags: always
 
     - name: Encypt login file
@@ -70,7 +70,7 @@
         ansible-vault encrypt {{ login_vars_path }}
         --vault-password-file {{ login_vars_vault_path }}
       changed_when: false
-      no_log: true
+      no_log: false
       tags: always
 
     - name: Ping the powervault device to validate connectivity
@@ -190,7 +190,7 @@
         headers:
           {'sessionKey': "{{ session_key.json.status[0].response }}", 'datatype':'json'}
       register: user_info
-      no_log: true
+      no_log: false
       tags: VERIFY_OMNIA_01
 
     - name: Verify the user settings

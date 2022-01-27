@@ -15,7 +15,7 @@
 
 - name: Include base variable file base_vars.yml
   include_vars: "{{ base_vars_filename }}"
-  no_log: true
+  no_log: false
 
 - name: Validate input parameters of base_vars are not empty
   fail:

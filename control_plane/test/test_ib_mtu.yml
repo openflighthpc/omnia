@@ -25,7 +25,7 @@
         username: "{{ username }}"
         password: "{{ password }}"
         filtered_dict: {}
-      no_log: true
+      no_log: false
       tags: reboot,mtu
 
     - name: Authenticate
@@ -41,7 +41,7 @@
               enter: Sign in
             status_code: 302
           register: login
-          no_log: true
+          no_log: false
  
         - name: Verify authentication status
           fail:
@@ -53,7 +53,7 @@
             filtered_dict: "{{filtered_dict |combine({item.key: item.value})}}"
           when: item.key not in 'invocation'
           with_dict: "{{ login }}"
-          no_log: true
+          no_log: false
 
         - name: Authentication failure response
           fail: 

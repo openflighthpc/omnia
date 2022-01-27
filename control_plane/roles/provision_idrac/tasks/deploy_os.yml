@@ -72,7 +72,7 @@
         hosts create --name {{ inventory_hostname }} --inventory "{{ provisioned_idrac_inventory_name }}"
       register: update_inventory
       changed_when: true
-      no_log: true
+      no_log: false
       when:
         - awx_search_key in hostname.stdout
         - inventory_hostname not in fetch_inventory.stdout

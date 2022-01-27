@@ -59,7 +59,7 @@
   register: docker_login_output
   failed_when: false
   when: hostvars['127.0.0.1']['docker_username'] or hostvars['127.0.0.1']['docker_password']
-  no_log: true
+  no_log: false
 
 - name: Docker login check
   fail:

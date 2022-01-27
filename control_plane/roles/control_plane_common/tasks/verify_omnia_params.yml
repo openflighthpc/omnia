@@ -37,7 +37,7 @@
   command: cat {{ role_path }}/../../../{{ config_filename }}
   changed_when: false
   register: config_content
-  no_log: True
+  no_log: false
 
 - name: Decrpyt omnia_config.yml
   command: >-
@@ -47,7 +47,7 @@
 
 - name: Include variable file omnia_config.yml
   include_vars: "{{ role_path }}/../../../{{ config_filename }}"
-  no_log: True
+  no_log: false
 
 - name: Validate input parameters are not empty
   fail:
@@ -101,7 +101,7 @@
     k8s_cni: "{{ k8s_cni }}"
     docker_username: "{{ docker_username }}"
     docker_password: "{{ docker_password }}"
-  no_log: True
+  no_log: false
 
 - name: Verify the value of login_node_required
   assert:

@@ -82,7 +82,7 @@
     - "'ImagePullBackOff' in hostvars['check_k8s_pods']['k8s_pods_status'] or 'ErrImagePull' in hostvars['check_k8s_pods']['k8s_pods_status']"
     - hostvars['127.0.0.1']['docker_username'] or hostvars['127.0.0.1']['docker_password']
     - "'compute' in group_names"
-  no_log: true
+  no_log: false
 
 - name: Docker login check
   fail:

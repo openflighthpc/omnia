@@ -54,7 +54,7 @@
   changed_when: false
   register: test_email_check
   retries: 5
-  no_log: true
+  no_log: false
   failed_when: false
   until: not test_email_check.failed
 

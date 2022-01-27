@@ -17,7 +17,7 @@
     awx --conf.host {{ awx_host }} --conf.username {{ awx_admin_user }} --conf.password {{ awx_password }}
     --conf.insecure hosts list --inventory {{ node_inventory }} -f human --filter "name"
   changed_when: false
-  no_log: true
+  no_log: false
   register: hosts_list
 
 - name: Add the host to compute group in node_inventory if it exists

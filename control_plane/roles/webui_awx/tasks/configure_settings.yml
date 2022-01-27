@@ -78,7 +78,7 @@
 - name: Check if {{ tower_config_file }} file is encrypted
   command: cat {{ tower_config_file }}
   changed_when: false
-  no_log: true
+  no_log: false
   register: config_content
   run_once: true
 

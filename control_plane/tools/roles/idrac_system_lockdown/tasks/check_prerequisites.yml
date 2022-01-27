@@ -35,7 +35,7 @@
   set_fact:
     idrac_username: "{{ lookup('env','ANSIBLE_NET_USERNAME') }}"
     idrac_password: "{{ lookup('env','ANSIBLE_NET_PASSWORD') }}"
-  no_log: true
+  no_log: false
   when: '"awx-" in hostname.stdout'
   run_once: true
 

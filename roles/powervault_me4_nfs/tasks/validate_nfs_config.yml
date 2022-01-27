@@ -4,7 +4,7 @@
 
 - name: Include variable file for powervault
   include_vars:  "{{ role_path }}/vars/main.yml"
-  no_log: true
+  no_log: false
 
 - name: Refresh ssh-key
   command: ssh-keygen -R {{ inventory_hostname }}

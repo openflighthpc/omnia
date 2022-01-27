@@ -82,21 +82,21 @@
       register: fetch_awx_username
       changed_when: false
       run_once: true
-      no_log: true
+      no_log: false
 
     - name: Fetch awx password
       command: grep "password:" "{{ playbook_dir }}/roles/webui_awx/files/{{ awx_vars_filename }}"
       register: fetch_awx_password
       changed_when: false
       run_once: true
-      no_log: true
+      no_log: false
 
     - name: Set awx variables
       set_fact:
         awx_host: "{{ fetch_awx_host.stdout | regex_replace('host: ','') }}"
         awx_username: "{{ fetch_awx_username.stdout | regex_replace('username: ','') }}"
         awx_password: "{{ fetch_awx_password.stdout | regex_replace('password: ','') }}"
-      no_log: true
+      no_log: false
 
     - name: Encrypt tower_cli.cfg
       command: >-
@@ -113,7 +113,7 @@
       register: inventory_list
       run_once: true
       changed_when: false
-      no_log: true
+      no_log: false
 
     - name: Create provisioned_idrac inventory
       command: >-
@@ -122,7 +122,7 @@
       register: create_inventory
       run_once: true
       changed_when: true
-      no_log: true
+      no_log: false
       when: provisioned_idrac_inventory_name not in inventory_list.stdout
 
     - name: Fetch provisioned_idrac inventory
@@ -132,7 +132,7 @@
       register: fetch_inventory
       run_once: true
       changed_when: false
-      no_log: true
+      no_log: false
 
     - name: Set provision status
       set_fact:

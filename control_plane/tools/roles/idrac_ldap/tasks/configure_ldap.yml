@@ -34,13 +34,13 @@
     username: "{{ idrac_username }}"
     password: "{{ idrac_password }}"
   register: enable_ldap
-  no_log: true
+  no_log: false
   when: ldap_directory_services == "enabled"
 
 - name: Update LDAP port and role group 1 privilage
   command: sshpass -p {{ idrac_password }} ssh -o "StrictHostKeyChecking no" {{ idrac_username }}@{{ inventory_hostname }} 'racadm set {{ item.name }} {{ item.value }}'
   changed_when: true
-  no_log: true
+  no_log: false
   when: ldap_directory_services == "enabled"
   with_items:
     - { name: "iDRAC.LDAP.Port", value: "{{ ldap_port }}" }

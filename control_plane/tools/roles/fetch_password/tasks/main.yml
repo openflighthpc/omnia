@@ -15,7 +15,7 @@
 
 - name: Include variables from control_plane_common role
   include_vars: "{{ role_path }}/../../../roles/control_plane_common/vars/main.yml"
-  no_log: True
+  no_log: false
 
 - name: Check login_vars.yml is encrypted
   command: cat {{ role_path }}/../../../{{ login_vars_filename }}
@@ -31,12 +31,12 @@
 
 - name: Include variable file appliance_config.yml
   include_vars: "{{ role_path }}/../../../{{ login_vars_filename }}"
-  no_log: true
+  no_log: false
 
 - name: Save input variables from file
   set_fact:
     cobbler_password: "{{ provision_password }}"
-  no_log: true
+  no_log: false
 
 - name: Encrypt login_vars.yml
   command: >-
