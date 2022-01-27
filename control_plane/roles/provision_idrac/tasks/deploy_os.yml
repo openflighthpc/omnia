@@ -19,6 +19,7 @@
         idrac_ip: "{{ inventory_hostname }}"
         idrac_user: "{{ idrac_username }}"
         idrac_password: "{{ idrac_password }}"
+        validate_certs: false
         attributes:
           SetBootOrderEn: NIC.PxeDevice.1-1,NIC.PxeDevice.2-1,NIC.PxeDevice.3-1,NIC.PxeDevice.4-1
           UefiBootSeq: NIC.PxeDevice.1-1,NIC.PxeDevice.2-1,NIC.PxeDevice.3-1,NIC.PxeDevice.4-1
@@ -49,6 +50,7 @@
         idrac_ip: "{{ inventory_hostname }}"
         idrac_user: "{{ idrac_username }}"
         idrac_password: "{{ idrac_password }}"
+        validate_certs: false
         share_name: "{{ management_station_ip }}:{{ nfs_share_offline_repo }}"
         iso_image: "{{ unattended_iso_filename }}"
         expose_duration: "{{ expose_duration }}"

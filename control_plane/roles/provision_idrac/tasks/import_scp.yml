@@ -93,6 +93,7 @@
         idrac_ip: "{{ inventory_hostname }}"
         idrac_user: "{{ idrac_username }}"
         idrac_password: "{{ idrac_password }}"
+        validate_certs: false
         share_name: "{{ role_path }}/files/"
         command: "import"
         scp_file: "{{ scp_filename }}"

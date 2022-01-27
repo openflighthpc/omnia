@@ -25,6 +25,7 @@
         idrac_ip: "{{ inventory_hostname }}"
         idrac_user: "{{ idrac_username }}"
         idrac_password: "{{ idrac_password }}"
+        validate_certs: false
         share_name: "{{ management_station_ip }}:{{ nfs_share_offline_repo }}/dellupdates"
         reboot: True
         job_wait: True

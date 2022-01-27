@@ -152,6 +152,7 @@
         idrac_ip: "{{ inventory_hostname }}"
         idrac_user: "{{ idrac_username }}"
         idrac_password: "{{ idrac_password }}"
+        validate_certs: false
       register: lc_check_status
 
     - name: LC not available
@@ -165,6 +166,7 @@
         idrac_ip: "{{ inventory_hostname }}"
         idrac_user: "{{ idrac_username }}"
         idrac_password: "{{ idrac_password }}"
+        validate_certs: false
       register: idrac_info
 
     - block:
@@ -222,6 +224,7 @@
         idrac_ip: "{{ inventory_hostname }}"
         idrac_user: "{{ idrac_username }}"
         idrac_password: "{{ idrac_password }}"
+        validate_certs: false
         share_name: "{{ management_station_ip }}:{{ nfs_share_offline_repo }}"
         command: "export"
         scp_components: "BIOS"
