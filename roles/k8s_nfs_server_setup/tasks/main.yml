@@ -72,11 +72,13 @@
   with_items:
     - "{{ nfs_services }}"
   tags: nfs_server
+  when: not openflight_stack
 
 - name: Reload firewalld
   command: firewall-cmd --reload
   changed_when: true
   tags: nfs_server
+  when: not openflight_stack
 
 - name: Stop and disable firewalld
   service:
